@@ -40,7 +40,7 @@ local CacheObject = { }; do
     CacheObject.__index = CacheObject;
 
     local RenderObjects = { }; do
-        function RenderObjects.HealthBar( Self )
+        function RenderObjects.HealthBar( Self, Color )
             local Position, Size = Self : GetRender( );
 
             if ( not Position ) then
@@ -59,10 +59,10 @@ local CacheObject = { }; do
             local Transparency = Self.Transparency;
 
             FilledRectangle( Vector2New( PositionX, Top - 1 ), Vector2New( 3, MaxBarHeight + 2 ), Black, Transparency, 0, 1 );
-            FilledRectangle( Vector2New( PositionX + 1, Bottom - Height ), Vector2New( 1, Height ), White, Transparency, 0 );
+            FilledRectangle( Vector2New( PositionX + 1, Bottom - Height ), Vector2New( 1, Height ), Color, Transparency, 0 );
         end
 
-        function RenderObjects.Tool( Self )
+        function RenderObjects.Tool( Self, Color )
             local Position, Size = Self : GetRender( );
 
             if ( not Position ) then
@@ -71,10 +71,10 @@ local CacheObject = { }; do
 
             local Transparency = Self.Transparency;
             
-            Text( Vector2New( Position.X + ( Size.X * .5 ), Position.Y + ( Size.Y + 1 ) ), 2, 13, White, Transparency, Black, Transparency, Self.Tool, true );
+            Text( Vector2New( Position.X + ( Size.X * .5 ), Position.Y + ( Size.Y + 1 ) ), 2, 13, Color, Transparency, Black, Transparency, Self.Tool, true );
         end
 
-        function RenderObjects.Name( Self )
+        function RenderObjects.Name( Self, Color )
             local Position, Size = Self : GetRender( );
 
             if ( not Position ) then
@@ -82,10 +82,10 @@ local CacheObject = { }; do
             end
             
             local Transparency = Self.Transparency;
-            Text( Vector2New( Position.X + ( Size.X * .5 ), Position.Y - 17 ), 2, 13, White, Transparency, Black, Transparency, Self.Name, true );
+            Text( Vector2New( Position.X + ( Size.X * .5 ), Position.Y - 17 ), 2, 13, Color, Transparency, Black, Transparency, Self.Name, true );
         end
 
-        function RenderObjects.Box( Self )
+        function RenderObjects.Box( Self, Color )
             local Position, Size = Self : GetRender( );
 
             if ( not Position ) then
@@ -95,7 +95,7 @@ local CacheObject = { }; do
             local Transparency = Self.Transparency;
 
             Rectangle( Position, Size, Black, Transparency, 0, 3 );
-            Rectangle( Position, Size, White, Transparency, 0, 1 );
+            Rectangle( Position, Size, Color, Transparency, 0, 1 );
         end
     end
 
@@ -157,11 +157,13 @@ local CacheObject = { }; do
             local Configuration = self.Configuration;
 
             for Name, Callback in RenderObjects do
-                if ( not Configuration[ Name ] ) then
+                local Color = Configuration[ Name ];
+
+                if ( not Color ) then -- Want it disabled? Remove it from the table.
                     continue;
                 end
 
-                Callback( self );
+                Callback( self, Color ); -- [ 1 ] = Color
             end
 
             self.Transparency = ( 1 - MathMax( 0, MathMin( 1, ( Tick( ) - self.Dead ) * 2 ) ) );
@@ -225,7 +227,7 @@ local Cache = { }; DrawingImmediate.GetPaint( 1 ) : Connect( function( )
         
         Object : Stepper( );
     end
-end ) CacheObject.Configuration[ "Box" ] = 1;
+end ) CacheObject.Configuration[ "Box" ] = White;
 ]]
 
 return CacheObject;
