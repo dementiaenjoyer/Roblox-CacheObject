@@ -117,6 +117,8 @@ local CacheObject = { }; do
     CacheObject.Health = 100;
 
     CacheObject.Configuration = { };
+
+    CacheObject.Tool = "Unknown";
     CacheObject.Dead = Infinite;
 
     -- Methods
