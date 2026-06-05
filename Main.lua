@@ -163,7 +163,7 @@ local CacheObject = { }; do
                     continue;
                 end
 
-                Callback( self, Color ); -- [ 1 ] = Color
+                Callback( self, Color );
             end
 
             self.Transparency = ( 1 - MathMax( 0, MathMin( 1, ( Tick( ) - self.Dead ) * 2 ) ) );
