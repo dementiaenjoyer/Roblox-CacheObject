@@ -102,7 +102,11 @@ local CacheObject = { }; do
     function CacheObject : Initiate( Name, Callback )
         local ClassObject = SetMetatable( { }, self ); do
             ClassObject.Name = ( Name or "" );
-        end Callback( ClassObject );
+        end
+		
+		if ( Callback ) then
+			Callback( ClassObject );
+		end
 
         return ClassObject;
     end
